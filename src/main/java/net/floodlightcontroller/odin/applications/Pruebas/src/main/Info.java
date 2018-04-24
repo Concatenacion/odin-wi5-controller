@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.util.HashSet;
 
 import balancer.Balancer;
+import utils.Network;
 import utils.OdinClient;
 
 public class Info /* TODO Extends OdinApplication */ implements Runnable {
@@ -39,8 +40,10 @@ public class Info /* TODO Extends OdinApplication */ implements Runnable {
 				System.out.println("Pregunto a gente cosas.");   
 		        
 				
+				Network net = new Network(obtenerInfo());
+
+				bl.balance(net);
 				
-				bl.balance(obtenerInfo());
 				
 				System.out.println();
 				

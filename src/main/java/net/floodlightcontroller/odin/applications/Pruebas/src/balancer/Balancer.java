@@ -2,11 +2,12 @@ package balancer;
 
 import java.util.HashSet;
 
+import utils.Network;
 import utils.OdinClient;
 
 public interface Balancer {	
 	
-	public void balance(HashSet<OdinClient>clients);	
+	public void balance();	
 	
-	public HashSet<OdinClient> getNetwork();
+	public Network getNetwork();
 }

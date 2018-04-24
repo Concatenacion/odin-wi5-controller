@@ -5,6 +5,8 @@ import org.graphstream.graph.implementations.*;
 
 public class GraphStream {
 	public static void main(String args[]) {
+		
+		
 		Graph graph = new SingleGraph("Tutorial 1");
 
 		graph.addNode("A");

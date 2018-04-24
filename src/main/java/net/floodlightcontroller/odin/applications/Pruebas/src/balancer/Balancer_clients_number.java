@@ -8,6 +8,7 @@ import java.util.Set;
 
 import main.SmartApSelection;
 import utils.MACAddress;
+import utils.Network;
 import utils.OdinClient;
 
 public class Balancer_clients_number implements Balancer {
@@ -17,6 +18,8 @@ public class Balancer_clients_number implements Balancer {
 	* a STA can be heard by more than one agent
 	* so the MAC address of a STA may appear more than once (one per each agent who has heard it above the threshold)
 	*/
+	
+	
 	/* The table is
 	* MAC of the STA		IP of the agent
 	* 00:00:00:00:00:01		192.168.0.1
@@ -35,22 +38,22 @@ public class Balancer_clients_number implements Balancer {
 	* 192.168.0.2		1
 	* 192.168.0.3		2
 	*/
-	Map<InetAddress, Integer> newMapping = new HashMap<InetAddress, Integer> ();
-	
+	Map<InetAddress, Integer> newMapping = new HashMap<InetAddress, Integer> ();	
 	
 	private HashSet<OdinClient>clients;
 	
-	public Balancer_clients_number(HashSet<OdinClient>clients, Map<MACAddress, Set<InetAddress>> hearingMap,
-			Map<InetAddress, Integer> newMapping){
-		this.hearingMap = hearingMap;
-		this.newMapping = newMapping;
-		this.clients=clients;
+	
+	private Network network;
+	
+	public Balancer_clients_number(Network network){
+		this.network = network;
+		this.clients = network.getClients();
 	}
 
 	@Override
-	public void balance(HashSet<OdinClient>clientes) {
+	public void balance() {
 		
-		System.out.println("ordenando");
+		
 		
 		if (clients.size() == 0)
 			return;
@@ -112,15 +115,14 @@ public class Balancer_clients_number implements Balancer {
 			
 			/* increase the number of clients associated to that agent (the one with the fewest number of clients) */
 			newMapping.put (minNode, newMapping.get(minNode) + 1);
-			SmartApSelection.newMapping = this.newMapping;
 			System.out.println("he movido "+ client.getIpAddress() + " a - " + minNode.toString() );
 		}
 		
 	}
 
 	@Override
-	public HashSet<OdinClient> getNetwork() {
-		return clients;
+	public Network getNetwork() {
+		return network;
 	}
 
 }

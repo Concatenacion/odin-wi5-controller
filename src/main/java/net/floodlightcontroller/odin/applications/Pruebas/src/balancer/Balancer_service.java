@@ -2,25 +2,26 @@ package balancer;
 
 import java.util.HashSet;
 
+import utils.Network;
 import utils.OdinClient;
 
 public class Balancer_service implements Balancer {
 	
-	private HashSet<OdinClient>clients;
+	private Network network;
 	
-	public Balancer_service(HashSet<OdinClient>clients){
-		this.clients=clients;
+	public Balancer_service(Network network){
+		this.network=network;
 	}
 
 	@Override
-	public void balance(HashSet<OdinClient>clients) {
+	public void balance() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public HashSet<OdinClient> getNetwork() {
-		return clients;
+	public Network getNetwork() {
+		return network;
 	}
 
 }

@@ -2,6 +2,9 @@ package gui;
 
 import balancer.Balancer;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;  // Using Frame class in package java.awt
 import java.awt.Label;
@@ -11,6 +14,13 @@ import java.awt.TextField;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.View;
+import org.graphstream.ui.view.Viewer;
 
 public class gui extends JFrame implements Runnable {
 	
@@ -55,12 +65,26 @@ public class gui extends JFrame implements Runnable {
 			add(agentsPoints[i]);
 		}
 	    
-	    add(new JLabel(image));
 	    
+	    Graph graph = new MultiGraph("Tutorial 1");
+
+		graph.addNode("A");
+		graph.addNode("B");
+		graph.addNode("C");
+		graph.addEdge("AB", "A", "B");
+		graph.addEdge("BC", "B", "C");
+		graph.addEdge("CA", "C", "A");
+		
+		JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension(2000,20000));
+		Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+	    View view = viewer.addDefaultView(false);		
+		panel.add((Component) view, BorderLayout.CENTER);
+		
 	    setTitle("Network");  // "super" Frame sets its title
 	    setSize(2500, 2500);
 	    
-	    
+	    add(panel, BorderLayout.CENTER);
 	    
 	    
 	    setVisible(true);

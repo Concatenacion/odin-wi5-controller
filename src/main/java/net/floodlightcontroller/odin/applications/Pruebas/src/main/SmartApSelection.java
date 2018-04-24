@@ -11,6 +11,7 @@ import java.util.Set;
 import balancer.*;
 import gui.gui;
 import utils.MACAddress;
+import utils.Network;
 import utils.OdinClient;
 
 
@@ -21,8 +22,7 @@ public class SmartApSelection implements Runnable{
 	
 	private static Map<MACAddress, Set<InetAddress>> hearingMap = new HashMap<MACAddress, Set<InetAddress>> ();
 	
-	public static Map<InetAddress, Integer> newMapping = new HashMap<InetAddress, Integer> ();
-	
+	public static Map<InetAddress, Integer> newMapping = new HashMap<InetAddress, Integer> ();	
 	
 	
 	public static void main(String[] args) {
@@ -43,20 +43,22 @@ public class SmartApSelection implements Runnable{
 		option = sc.nextLine();
 		
 		Balancer bl = null;
-				
+		
+		Network net = new Network(clients);
+		
 		if(option.equals("1")){
 			System.out.println("Balanceo por servicio.");
-			bl = new Balancer_service(new HashSet<OdinClient>());
+			bl = new Balancer_service(net);
 		}
 		else if(option.equals("2")){
 			System.out.println("Balanceo por numero de clientes.");
-			bl = new Balancer_clients_number(clients, hearingMap, newMapping);
+			bl = new Balancer_clients_number(net);
 			//bl = new Balancer_clients_number(network);
 
 		}
 		else if(option.equals("3")){
 			System.out.println("Balanceo por ancho de banda usado.");
-			bl = new Balancer_service(new HashSet<OdinClient>());
+			bl = new Balancer_service(net);
 			//bl = new Balancer_broadband(network);
 
 		}
