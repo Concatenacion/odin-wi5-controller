@@ -11,10 +11,10 @@ public class Info /* TODO Extends OdinApplication */ implements Runnable {
 	
 	
 	// this interval is for allowing the agents to connect to the controller
-	private final int INITIAL_INTERVAL = 30000; // in ms
+	private final int INITIAL_INTERVAL = 3000; // in ms
 
 	// this interval this interval is the period for showing the statistics
-	private final int REPORTING_PERIOD = 15000; // in ms
+	private final int REPORTING_PERIOD = 1500; // in ms
 	
 	private Balancer bl;
 	
@@ -39,10 +39,7 @@ public class Info /* TODO Extends OdinApplication */ implements Runnable {
 				Thread.sleep(REPORTING_PERIOD);
 				System.out.println("Pregunto a gente cosas.");   
 		        
-				
-				Network net = new Network(obtenerInfo());
-
-				bl.balance(net);
+				bl.balance();
 				
 				
 				System.out.println();
@@ -56,9 +53,9 @@ public class Info /* TODO Extends OdinApplication */ implements Runnable {
 		}		
 	}
 		
-	private  HashSet<OdinClient> obtenerInfo(){
-		return SmartApSelection.clients;
-	}
+//	private  HashSet<OdinClient> obtenerInfo(){
+//		return SmartApSelection.clients;
+//	}
 
 	
 
