@@ -11,26 +11,6 @@ import utils.OdinClient;
 
 public class Balancer_clients_number implements Balancer {
 
-	/*
-	 * the table has pairs of MAC - IP Address a STA can be heard by more than
-	 * one agent so the MAC address of a STA may appear more than once (one per
-	 * each agent who has heard it above the threshold)
-	 */
-
-	/*
-	 * The table is hearing map MAC of the STA IP of the agent 00:00:00:00:00:01
-	 * [ 192.168.0.1, 192.168.0.2 ] 00:00:00:00:00:02 [ 192.168.0.1 ]
-	 * 00:00:00:00:00:03 [ 192.168.0.3 ]
-	 */
-
-	/*
-	 * This table will be used for storing the status of the new balance as you
-	 * fill the table, you distribute and balance the clients between agents For
-	 * each agent, stores the number of associated clients The table is
-	 * newHearingMap IP Number of associated clients (in order to allow the load
-	 * balancing between agents) 192.168.0.1 3 192.168.0.2 1 192.168.0.3 2
-	 */
-
 	private HashSet<OdinClient> clients;
 
 	private Network network;

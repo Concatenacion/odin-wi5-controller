@@ -6,7 +6,7 @@ import java.net.InetAddress;
 public class OdinClient implements Comparable {
 	private final MACAddress hwAddress;
 	private InetAddress ipAddress;
-	private String lvap;
+	private Lvap lvap;
 
 
 	// NOTE: Will need to add security token and temporal keys here later.
@@ -16,7 +16,7 @@ public class OdinClient implements Comparable {
 	public OdinClient (MACAddress hwAddress, InetAddress ipAddress, String lvap) {
 		this.hwAddress = hwAddress;
 		this.ipAddress = ipAddress;
-		this.lvap = lvap;
+//		this.lvap = lvap;
 	}
 
 
@@ -53,7 +53,7 @@ public class OdinClient implements Comparable {
 	 * Get the client's lvap object
 	 * @return lvap
 	 */
-	public String getLvap() {
+	public Lvap getLvap() {
 		return lvap;
 	}
 
@@ -61,7 +61,7 @@ public class OdinClient implements Comparable {
 	/**
 	 * Set the client's lvap
 	 */
-	public void setLvap() {
+	public void setLvap(Lvap lvap) {
 		this.lvap = lvap;
 	}
 

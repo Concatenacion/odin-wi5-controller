@@ -37,12 +37,12 @@ public class Info /* TODO Extends OdinApplication */ implements Runnable {
 				
 				
 				Thread.sleep(REPORTING_PERIOD);
-				System.out.println("Pregunto a gente cosas.");   
+				//System.out.println("Pregunto a gente cosas.");   
 		        
-				bl.balance();
+				//bl.balance();
 				
 				
-				System.out.println();
+				//System.out.println();
 				
 				
 			} catch (InterruptedException e) {
