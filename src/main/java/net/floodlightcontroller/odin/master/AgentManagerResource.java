@@ -1,7 +1,8 @@
 package net.floodlightcontroller.odin.master;
+import java.util.Map;
 
-import java.net.InetAddress;
-import java.util.Set;
+import net.floodlightcontroller.storage.IResultSet;
+import net.floodlightcontroller.storage.IStorageSourceService;
 
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
@@ -9,10 +10,19 @@ import org.restlet.resource.ServerResource;
 public class AgentManagerResource extends ServerResource {
 
 	@Get("json")
-    public Set<InetAddress> retreive() {
-    	OdinMaster oc = (OdinMaster) getContext().getAttributes().
-        					get(OdinMaster.class.getCanonicalName());
+  public Object retreive() { 	
     	
-    	return oc.getAgentAddrs(PoolManager.GLOBAL_POOL);
+        IStorageSourceService storageSource = 
+                (IStorageSourceService)getContext().getAttributes().
+                    get(IStorageSourceService.class.getCanonicalName());    	
+           	
+    	IResultSet res = storageSource.executeQuery("PARAMETERS", null, null, null);
+    	if(res.next()){
+        Map<String,Object> map = res.getRow();
+        return map.get("SMARTAP_PARAMS");
+    	}
+    	else{
+    		return null;
+    	}
     }
 }

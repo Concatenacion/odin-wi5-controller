@@ -42,6 +42,7 @@ import net.floodlightcontroller.packet.DHCP;
 import net.floodlightcontroller.packet.Ethernet;
 import net.floodlightcontroller.packet.IPacket;
 import net.floodlightcontroller.restserver.IRestApiService;
+import net.floodlightcontroller.storage.IStorageSourceService;
 import net.floodlightcontroller.threadpool.IThreadPoolService;
 import net.floodlightcontroller.util.MACAddress;
 
@@ -57,6 +58,7 @@ public class OdinMaster implements IFloodlightModule, IOFSwitchListener, IOdinMa
 	protected static Logger log = LoggerFactory.getLogger(OdinMaster.class);
 	protected IRestApiService restApi;
 
+	private IStorageSourceService storageSourceService;
 	private IFloodlightProviderService floodlightProvider;
 	private ScheduledExecutorService executor;
 
@@ -93,6 +95,8 @@ public class OdinMaster implements IFloodlightModule, IOFSwitchListener, IOdinMa
 	static private final String DEFAULT_POOL_FILE = "poolfile";
 	static private final String DEFAULT_CLIENT_LIST_FILE = "odin_client_list";
 	static private final int DEFAULT_PORT = 2819;
+ 
+  	public List<OdinApplication> applicationList;
 
 	public OdinMaster(){
 		clientManager = new ClientManager();
@@ -1081,6 +1085,7 @@ public class OdinMaster implements IFloodlightModule, IOFSwitchListener, IOdinMa
 	public void init(FloodlightModuleContext context)
 			throws FloodlightModuleException {
 		floodlightProvider = context.getServiceImpl(IFloodlightProviderService.class);
+   	storageSourceService = context.getServiceImpl(IStorageSourceService.class);
 		restApi = context.getServiceImpl(IRestApiService.class);
 		IThreadPoolService tp = context.getServiceImpl(IThreadPoolService.class);
 		executor = tp.getScheduledExecutor();
@@ -1106,7 +1111,7 @@ public class OdinMaster implements IFloodlightModule, IOFSwitchListener, IOdinMa
         	agentAuthListFile = agentAuthListFileConfig;
         }
         
-        List<OdinApplication> applicationList = new ArrayList<OdinApplication>();
+        this.applicationList = new ArrayList<OdinApplication>();
        	try {
 			BufferedReader br = new BufferedReader (new FileReader(agentAuthListFile));
 
@@ -1405,6 +1410,7 @@ public class OdinMaster implements IFloodlightModule, IOFSwitchListener, IOdinMa
 
         // Spawn applications
         for (OdinApplication app: applicationList) {
+
         	executor.execute(app);
         }
 	}
@@ -1740,6 +1746,10 @@ public class OdinMaster implements IFloodlightModule, IOFSwitchListener, IOdinMa
 			this.thReqSTA = thReqSTA;
 			this.filename = filename;
 		}
+	}
+ 	@Override
+	public IStorageSourceService getStorageService() {
+		return storageSourceService;
 	}
 
 }

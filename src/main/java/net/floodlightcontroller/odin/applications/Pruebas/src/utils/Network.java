@@ -7,10 +7,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/** TODO **/
-public class Network {
 
-	
+import net.floodlightcontroller.odin.master.OdinApplication;
+import net.floodlightcontroller.odin.master.OdinClient;
+import net.floodlightcontroller.util.MACAddress;
+
+public class Network {
 	
 	/*
 	 * The table has pairs of MAC - IP Address a STA can be heard by more than
@@ -38,20 +40,26 @@ public class Network {
 	 */
 	private static Map<InetAddress, Integer> newMapping = new HashMap<InetAddress, Integer>();
 
-	private static HashSet<OdinClient> clients = new HashSet<OdinClient>();
+	private static Set<OdinClient> clients = new HashSet<OdinClient>();
+  private static Set<InetAddress> agents = new HashSet<InetAddress>();
 
 	private static int numberAgents;
 
 	// Map to store RSSI for each STA in all APs
 	private Map<MACAddress, Double[]> rssiData = new HashMap<MACAddress, Double[]>();
 
-	public Network(HashSet<OdinClient> clients) {
+	public Network(Set<OdinClient> clients, Set<InetAddress> agents) {
+   
 		this.clients = clients;
-		inicializacionVariables();
+    this.agents = agents;
+
 	}
 
 	// METODOS DE ACCESO A LOS MAPAS
-
+  public int getAgents(){
+    return agents.size();
+  }
+  
 	// Clientes
 
 	public int numClients() {
@@ -66,9 +74,11 @@ public class Network {
 		return clients.add(client);
 	}
 
-	public HashSet<OdinClient> getClients() {
+	public Set<OdinClient> getClients() {
 		return clients;
 	}
+ 
+
 
 	public Set<InetAddress> getHearingClient(MACAddress address) {
 		return hearingMap.get(address);
@@ -94,7 +104,7 @@ public class Network {
 	// 4 clientes en la red 192.168.1.1 --> 192.168.1.9
 	// 3 ap's, en la red 192.168.0.1
 	private static void inicializacionVariables() {
-
+/**
 		try {
 			// Agentes - en la red 0
 			OdinClient agent1 = new OdinClient(new MACAddress(new String("00:00:00:00:00:01").getBytes()),
@@ -172,7 +182,7 @@ public class Network {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-
+**/
 	}
 
 }

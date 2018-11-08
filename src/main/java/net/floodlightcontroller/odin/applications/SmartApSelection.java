@@ -18,7 +18,12 @@ import net.floodlightcontroller.odin.master.OdinEventFlowDetection;
 import net.floodlightcontroller.odin.master.FlowDetectionCallback;
 import net.floodlightcontroller.odin.master.FlowDetectionCallbackContext;
 import net.floodlightcontroller.odin.master.OdinMaster.SmartApSelectionParams;
+import net.floodlightcontroller.storage.IStorageSourceService;
 import net.floodlightcontroller.util.MACAddress;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
 
 public class SmartApSelection extends OdinApplication {
 
@@ -105,6 +110,29 @@ public class SmartApSelection extends OdinApplication {
   public void run() {
     System.out.println("[SmartAPSelection] Start");
     this.SMARTAP_PARAMS = getSmartApSelectionParams();
+    
+    IStorageSourceService storageSourceService = getStorageService();
+	
+	  Set<String> columns = new HashSet<String>();
+	
+	  columns.add("SMARTAP_PARAMS");
+
+	  storageSourceService.createTable("PARAMETERS", columns);
+	
+	  Map<String, Object> parametrers = new HashMap<String, Object>();
+	
+	  parametrers.put("SMARTAP_PARAMS", SMARTAP_PARAMS);
+		
+	  storageSourceService.insertRow("PARAMETERS", parametrers);	
+    
+    // Wait a period in order to let the user start the agents
+    try {
+      System.out.println("[SmartAPSelection] Sleep for " + SMARTAP_PARAMS.time_to_start);
+      Thread.sleep(SMARTAP_PARAMS.time_to_start);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    
     try {
       System.out.println("[SmartAPSelection] Sleep for " + SMARTAP_PARAMS.time_to_start);
       Thread.sleep(SMARTAP_PARAMS.time_to_start);
@@ -127,7 +155,6 @@ public class SmartApSelection extends OdinApplication {
     num_agents = agents.size(); // Number of agents
     channels = new int[num_agents]; // Array to store the channels in use
     int[] channelsAux = new int[num_agents];
-
 
     ps.println("[SmartAPSelection] Log file " + SMARTAP_PARAMS.filename); // Log in file
     ps.println("[SmartAPSelection] Parameters:");
@@ -960,5 +987,9 @@ public class SmartApSelection extends OdinApplication {
       }
       ind_aux++;
     }
+  }  
+  
+  public SmartApSelectionParams getParams(){
+    return this.SMARTAP_PARAMS;
   }
 }

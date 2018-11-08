@@ -1,11 +1,11 @@
-package main;
+package net.floodlightcontroller.odin.applications.Pruebas.src.main;
 
 import java.net.InetAddress;
 import java.util.HashSet;
 
 import balancer.Balancer;
 import utils.Network;
-import utils.OdinClient;
+import net.floodlightcontroller.odin.master.OdinClient;
 
 public class Info /* TODO Extends OdinApplication */ implements Runnable {
 	
@@ -39,7 +39,7 @@ public class Info /* TODO Extends OdinApplication */ implements Runnable {
 				Thread.sleep(REPORTING_PERIOD);
 				//System.out.println("Pregunto a gente cosas.");   
 		        
-				//bl.balance();
+				bl.balance();
 				
 				
 				//System.out.println();

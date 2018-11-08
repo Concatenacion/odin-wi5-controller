@@ -4,14 +4,16 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import utils.MACAddress;
+
+import net.floodlightcontroller.util.MACAddress;
 import utils.Network;
-import utils.OdinClient;
+import net.floodlightcontroller.odin.master.OdinClient;
 
 public class Balancer_clients_number implements Balancer {
 
-	private HashSet<OdinClient> clients;
+	private Set<OdinClient> clients;
 
 	private Network network;
 
@@ -24,6 +26,8 @@ public class Balancer_clients_number implements Balancer {
 
 		if (clients.size() == 0)
 			return;
+      
+   System.out.println("Hay algun cliente");
 
 		/*
 		 * Now that the hearing map is populated, we re-assign clients to each

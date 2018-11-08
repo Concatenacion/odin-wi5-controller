@@ -3,7 +3,7 @@ package balancer;
 import java.util.HashSet;
 
 import utils.Network;
-import utils.OdinClient;
+import net.floodlightcontroller.odin.master.OdinClient;
 
 public interface Balancer {	
 	
