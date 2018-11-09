@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.PrintStream;
 import java.math.*;
 
+import net.floodlightcontroller.odin.applications.odinApplicationsStorage.SmartApSelectionStorage;
 import net.floodlightcontroller.odin.master.OdinApplication;
 import net.floodlightcontroller.odin.master.OdinClient;
 import net.floodlightcontroller.odin.master.OdinEventFlowDetection;
@@ -49,7 +50,8 @@ public class SmartApSelection extends OdinApplication {
   private int num_channels = 0;
   private int num_agents = 0;
   private String[][] vals_rx = null;
-
+  
+  private SmartApSelectionStorage storage;
 
   private long time = 0L; // Compare timestamps in ms
   
@@ -110,29 +112,20 @@ public class SmartApSelection extends OdinApplication {
   public void run() {
     System.out.println("[SmartAPSelection] Start");
     this.SMARTAP_PARAMS = getSmartApSelectionParams();
-    
-    IStorageSourceService storageSourceService = getStorageService();
-	
-	  Set<String> columns = new HashSet<String>();
-	
-	  columns.add("SMARTAP_PARAMS");
 
-	  storageSourceService.createTable("PARAMETERS", columns);
-	
-	  Map<String, Object> parametrers = new HashMap<String, Object>();
-	
-	  parametrers.put("SMARTAP_PARAMS", SMARTAP_PARAMS);
-		
-	  storageSourceService.insertRow("PARAMETERS", parametrers);	
+    IStorageSourceService storageSourceService = getStorageService();
+    
+    this.storage = new SmartApSelectionStorage(storageSourceService);
+    
+    storage.initStorage();
+
+//    Map<String, Object> parametrers = new HashMap<String, Object>();
+//
+//    parametrers.put("SMARTAP_PARAMS", SMARTAP_PARAMS);
+//	
+//    storageSourceService.insertRow(storage.SMARTAP_PARAMS, parametrers);	
     
     // Wait a period in order to let the user start the agents
-    try {
-      System.out.println("[SmartAPSelection] Sleep for " + SMARTAP_PARAMS.time_to_start);
-      Thread.sleep(SMARTAP_PARAMS.time_to_start);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    
     try {
       System.out.println("[SmartAPSelection] Sleep for " + SMARTAP_PARAMS.time_to_start);
       Thread.sleep(SMARTAP_PARAMS.time_to_start);
