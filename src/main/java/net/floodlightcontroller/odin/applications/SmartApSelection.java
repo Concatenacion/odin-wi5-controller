@@ -118,12 +118,8 @@ public class SmartApSelection extends OdinApplication {
     this.storage = new SmartApSelectionStorage(storageSourceService);
     
     storage.initStorage();
-
-//    Map<String, Object> parametrers = new HashMap<String, Object>();
-//
-//    parametrers.put("SMARTAP_PARAMS", SMARTAP_PARAMS);
-//	
-//    storageSourceService.insertRow(storage.SMARTAP_PARAMS, parametrers);	
+    
+    storage.insertSmartApSelectionParams(this.SMARTAP_PARAMS);
     
     // Wait a period in order to let the user start the agents
     try {
