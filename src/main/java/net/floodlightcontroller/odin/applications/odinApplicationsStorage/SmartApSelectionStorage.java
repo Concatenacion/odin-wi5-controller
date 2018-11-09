@@ -31,6 +31,7 @@ public class SmartApSelectionStorage {
 	}	
 	
 	public void initStorage(){
+		try{
 		//Parametros de la aplicacion		
 
 		Set<String> columns = new HashSet<String>();
@@ -43,22 +44,15 @@ public class SmartApSelectionStorage {
 		columns = new HashSet<String>();
 		columns.add("agent");		
 		
-		this.storageSourceService.createTable(SMARTAP_AGENTS, columns);		
-		
-		try {
-			insertAgent(new OdinAgentStorage(InetAddress.getByName("173.39.161.140"), 10, 14, 30, 80));
-			getAgents();
-			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		
+		this.storageSourceService.createTable(SMARTAP_AGENTS, columns);			
 		
 		//Clientes
 		columns = new HashSet<String>();
 		columns.add("CLIENT");
 				
-		this.storageSourceService.createTable(SMARTAP_CLIENTS, columns);		
+		this.storageSourceService.createTable(SMARTAP_CLIENTS, columns);
+		
+		}catch(Exception ex){ex.printStackTrace();}
 
 	}	
 	
@@ -67,30 +61,46 @@ public class SmartApSelectionStorage {
 	
 	//CLIENTES
 	public List<OdinClientStorage> getClients(){
-		return new ArrayList<OdinClientStorage>();
-	}
+		List<OdinClientStorage> clients = new ArrayList<OdinClientStorage>();
+		
+		IResultSet resultSet = this.storageSourceService.executeQuery(SMARTAP_CLIENTS,null,null, null);
+		
+		while(resultSet.next()){
+			Map<String, Object> res = resultSet.getRow();
+			for (Map.Entry<String, Object> entry : res.entrySet())
+			{
+				if(entry.getKey()!="id"){
+					clients.add((OdinClientStorage)entry.getValue());					
+				}
+			}
+		}
+				
+		return clients;	}
 	
 	public void insertClient(OdinClientStorage client){
+		Map<String, Object> rowToInsert = new HashMap<String, Object>();		
+		rowToInsert.put("agent", client);
 		
+		storageSourceService.insertRow(SMARTAP_CLIENTS, rowToInsert);
 	}
 	
 	//AGENTES
 	public List<OdinAgentStorage> getAgents(){
 			
 		List<OdinAgentStorage> agents = new ArrayList<OdinAgentStorage>();
-		
+				
 		IResultSet resultSet = this.storageSourceService.executeQuery("SMARTAP_AGENTS",null,null, null);
 		
-		try{
+		while(resultSet.next()){
 			Map<String, Object> res = resultSet.getRow();
-			System.out.println(res.toString());		
+			for (Map.Entry<String, Object> entry : res.entrySet())
+			{
+				if(entry.getKey()!="id"){
+					agents.add((OdinAgentStorage)entry.getValue());					
+				}
+			}
 		}
-		catch(StorageException ex){
-			System.out.println("PROBLEMA ENCONTRADO AQUI");
-		}
-		
-//		agents.add((OdinAgentStorage)resultSet.getRow());
-		
+				
 		return agents;
 
 	}
